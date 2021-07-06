@@ -26,6 +26,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #ifdef HAVE_TOUCHSCREENGUI
 #include "touchscreengui.h"
+#include "client/renderingengine.h"
 #endif
 
 // clang-format off
@@ -40,9 +41,10 @@ GUIModalMenu::GUIModalMenu(gui::IGUIEnvironment* env, gui::IGUIElement* parent,
 		m_remap_dbl_click(remap_dbl_click)
 {
 	m_gui_scale = g_settings->getFloat("gui_scaling");
-#ifdef __ANDROID__
-	float d = porting::getDisplayDensity();
+#ifdef HAVE_TOUCHSCREENGUI
+	float d = RenderingEngine::getDisplayDensity();
 	m_gui_scale *= 1.1 - 0.3 * d + 0.2 * d * d;
+	m_touched_count = 0;
 #endif
 	setVisible(true);
 	Environment->setFocus(this);
@@ -183,7 +185,7 @@ static bool isChild(gui::IGUIElement *tocheck, gui::IGUIElement *parent)
 	return false;
 }
 
-#ifdef __ANDROID__
+#ifdef HAVE_TOUCHSCREENGUI
 
 bool GUIModalMenu::simulateMouseEvent(
 		gui::IGUIElement *target, ETOUCH_INPUT_EVENT touch_event)
@@ -286,12 +288,21 @@ bool GUIModalMenu::preprocessEvent(const SEvent &event)
 			return retval;
 		}
 	}
+#endif
 
+#ifdef HAVE_TOUCHSCREENGUI
 	if (event.EventType == EET_TOUCH_INPUT_EVENT) {
 		irr_ptr<GUIModalMenu> holder;
 		holder.grab(this); // keep this alive until return (it might be dropped downstream [?])
 
-		switch ((int)event.TouchInput.touchedCount) {
+		if (event.TouchInput.Event == ETIE_PRESSED_DOWN) {
+			m_touched_count++;
+		}
+		int old_touched_count = m_touched_count;
+		if (m_touched_count > 0 && event.TouchInput.Event == ETIE_LEFT_UP) {
+			m_touched_count--;
+		}
+		switch (old_touched_count) {
 		case 1: {
 			if (event.TouchInput.Event == ETIE_PRESSED_DOWN || event.TouchInput.Event == ETIE_MOVED)
 				m_pointer = v2s32(event.TouchInput.X, event.TouchInput.Y);

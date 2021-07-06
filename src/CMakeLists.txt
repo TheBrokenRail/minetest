@@ -101,6 +101,15 @@ endif()
 
 option(ENABLE_GLES "Use OpenGL ES instead of OpenGL" FALSE)
 mark_as_advanced(ENABLE_GLES)
+
+option(ENABLE_TOUCH "Enable Touchscreen support" FALSE)
+if(ENABLE_TOUCH)
+	if(NOT ENABLE_GLES)
+		message(FATAL_ERROR "OpenGL ES Support Is Required For Touchscreen Support")
+	endif()
+	add_definitions(-DHAVE_TOUCHSCREENGUI)
+endif()
+
 if(BUILD_CLIENT)
 	# transitive dependency from Irrlicht (see longer explanation below)
 	if(NOT WIN32)
@@ -304,6 +313,11 @@ else()
 			mark_as_advanced(XXF86VM_LIBRARY)
 			set(CLIENT_PLATFORM_LIBS ${CLIENT_PLATFORM_LIBS} ${XXF86VM_LIBRARY})
 		endif(NOT HAIKU AND NOT APPLE)
+
+		if(ENABLE_TOUCH)
+			find_library(XINPUT_LIBRARY Xi REQUIRED)
+			set(CLIENT_PLATFORM_LIBS ${CLIENT_PLATFORM_LIBS} ${XINPUT_LIBRARY})
+		endif()
 
 		find_package(JPEG REQUIRED)
 		find_package(PNG REQUIRED)
