@@ -580,7 +580,7 @@
 #    can be blurred, so automatically upscale them with nearest-neighbor
 #    interpolation to preserve crisp pixels. This sets the minimum texture size
 #    for the upscaled textures; higher values look sharper, but require more
-#    memory.  Powers of 2 are recommended. This setting is ONLY applies if
+#    memory. Powers of 2 are recommended. This setting is ONLY applied if
 #    bilinear/trilinear/anisotropic filtering is enabled.
 #    This is also used as the base node texture size for world-aligned
 #    texture autoscaling.
@@ -679,7 +679,7 @@
 
 #    Texture size to render the shadow map on.
 #    This must be a power of two.
-#    Bigger numbers create better shadowsbut it is also more expensive.
+#    Bigger numbers create better shadows but it is also more expensive.
 #    type: int min: 128 max: 8192
 # shadow_map_texture_size = 1024
 
@@ -689,13 +689,13 @@
 #    type: bool
 # shadow_map_texture_32bit = true
 
-#    Enable poisson disk filtering.
-#    On true uses poisson disk to make "soft shadows". Otherwise uses PCF filtering.
+#    Enable Poisson disk filtering.
+#    On true uses Poisson disk to make "soft shadows". Otherwise uses PCF filtering.
 #    type: bool
 # shadow_poisson_filter = true
 
 #    Define shadow filtering quality
-#    This simulates the soft shadows effect by applying a PCF or poisson disk
+#    This simulates the soft shadows effect by applying a PCF or Poisson disk
 #    but also uses more resources.
 #    type: enum values: 0, 1, 2
 # shadow_filters = 1
@@ -705,21 +705,21 @@
 #    type: bool
 # shadow_map_color = false
 
-#    Set the shadow update time.
-#    Lower value means shadows and map updates faster, but it consume more resources.
-#    Minimun value 0.001 seconds max value 0.2 seconds
+#    Set the shadow update time, in seconds.
+#    Lower value means shadows and map updates faster, but it consumes more resources.
+#    Minimum value: 0.001; maximum value: 0.2
 #    type: float min: 0.001 max: 0.2
 # shadow_update_time = 0.2
 
 #    Set the soft shadow radius size.
-#    Lower values mean sharper shadows bigger values softer.
-#    Minimun value 1.0 and max value 10.0
+#    Lower values mean sharper shadows, bigger values mean softer shadows.
+#    Minimum value: 1.0; maxiumum value: 10.0
 #    type: float min: 1 max: 10
 # shadow_soft_radius = 1.0
 
 #    Set the tilt of Sun/Moon orbit in degrees
 #    Value of 0 means no tilt / vertical orbit.
-#    Minimun value 0.0 and max value 60.0
+#    Minimum value: 0.0; maximum value: 60.0
 #    type: float min: 0 max: 60
 # shadow_sky_body_orbit_tilt = 0.0
 
@@ -823,7 +823,7 @@
 #    Note: On Android, stick with OGLES1 if unsure! App may fail to start otherwise.
 #    On other platforms, OpenGL is recommended.
 #    Shaders are supported by OpenGL (desktop only) and OGLES2 (experimental)
-#    type: enum values: null, software, burningsvideo, direct3d8, direct3d9, opengl, ogles1, ogles2
+#    type: enum values: opengl, ogles1, ogles2
 # video_driver = opengl
 
 #    Radius of cloud area stated in number of 64 node cloud squares.
@@ -900,7 +900,7 @@
 # crosshair_color = (255,255,255)
 
 #    Crosshair alpha (opaqueness, between 0 and 255).
-#    Also controls the object crosshair color
+#    This also applies to the object crosshair.
 #    type: int min: 0 max: 255
 # crosshair_alpha = 255
 
@@ -1123,6 +1123,10 @@
 #    type: int min: 1
 # screen_dpi = 72
 
+#    Adjust Detected Display Density
+#    type: float
+# display_density_factor = 1
+
 #    Windows systems only: Start Minetest with the command line window in the background.
 #    Contains the same information as the file debug.txt (default name).
 #    type: bool
@@ -1155,13 +1159,13 @@
 # Client
 #
 
-#    If enabled, http links in chat can be middle-clicked or ctrl-left-clicked to open the link in the OS's default web browser.
+#    Clickable weblinks (middle-click or ctrl-left-click) enabled in chat console output.
 #    type: bool
 # clickable_chat_weblinks = false
 
-#    If clickable_chat_weblinks is enabled, specify the color (as 24-bit hexadecimal) of weblinks in chat.
+#    Optional override for chat weblink color.
 #    type: string
-# chat_weblink_color = #8888FF
+# chat_weblink_color =
 
 ## Network
 
@@ -1177,9 +1181,9 @@
 # remote_port = 30000
 
 #    Prometheus listener address.
-#    If minetest is compiled with ENABLE_PROMETHEUS option enabled,
+#    If Minetest is compiled with ENABLE_PROMETHEUS option enabled,
 #    enable metrics listener for Prometheus on that address.
-#    Metrics can be fetch on http://127.0.0.1:30000/metrics
+#    Metrics can be fetched on http://127.0.0.1:30000/metrics
 #    type: string
 # prometheus_listener_address = 127.0.0.1:30000
 
