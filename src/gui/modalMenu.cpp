@@ -219,6 +219,8 @@ bool GUIModalMenu::simulateMouseEvent(
 
 void GUIModalMenu::enter(gui::IGUIElement *hovered)
 {
+	if (!hovered)
+		return;
 	sanity_check(!m_hovered);
 	m_hovered.grab(hovered);
 	SEvent gui_event{};
